@@ -2,10 +2,11 @@ import streamlit as st
 import json
 import requests
 import time
+import os
 
 
-endpoint_url = 'https://wonderead-endpt-11280811525158.southeastasia.inference.ml.azure.com/score'
-auth_key = 'PQsmH6CA9LudxUGS225LRiCOWPUMwcGi'
+endpoint_url = 'https://wonderead-endpt-11290138888941.southeastasia.inference.ml.azure.com/score'
+auth_key = os.environ.get('AUTH_KEY')
 headers = {}
 headers["Authorization"] = f"Bearer {auth_key}"
 
@@ -145,9 +146,9 @@ if st.session_state.pg1_generated:
     with st.chat_message("assistant"):
         pg1 = st.session_state.pg1_content
         st.markdown(f"{pg1['title']}\n\n{pg1['content']}\n")
-        st.divider()
+        # st.divider()
         for i in range(3):
-            st.markdown(f"Q{i+1}({pg1[f'q{i+1}_type']}) {pg1[f'q{i+1}']}")
+            st.info(f"Q{i+1}({pg1[f'q{i+1}_type']}) {pg1[f'q{i+1}']}")
         st.text(f"생성 시간: {st.session_state.pg1_time:.2f} sec")
         
         
@@ -155,7 +156,8 @@ if st.session_state.pg1_generated and st.session_state.pg2_generated:
     with st.chat_message("assistant"):
         pg2 = st.session_state.pg2_content
         st.markdown(f"{pg2['content']}\n")
-        st.text(f"Q1({pg2['q1_type']}) {pg2['q1']}\nQ2({pg2['q2_type']}) {pg2['q2']}\nQ3({pg2['q3_type']}) {pg2['q3']}")
+        for i in range(3):
+            st.info(f"Q{i+1}({pg1[f'q{i+1}_type']}) {pg1[f'q{i+1}']}")
         st.text(f"생성 시간: {st.session_state.pg1_time:.2f} sec")
         
         
@@ -164,5 +166,6 @@ if st.session_state.pg3_generated:
         pg3 = st.session_state.pg3_content
         st.markdown(f"{pg3['content']}\n")
         for i in range(6):
-            st.markdown(f"{i+1}.{pg3[f'q{i+1}_type']}: {pg3[f'q{i+1}']}")
+            st.info(f"{i+1}.{pg3[f'q{i+1}_type']}: {pg3[f'q{i+1}']}")
+            st.markdown(f"{pg3[f'q{i+1}_options']}")
         st.text(f"생성 시간: {st.session_state.pg3_time:.2f} sec")
